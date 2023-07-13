@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginInfo, accountInfo, userInfo } from "../data/dataTypes";
 import { createNewUser, isUserNameActive } from "../data/Axios";
 
 type FieldValidation = Record<string, string>;
 
 function Signup() {
+  const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState<loginInfo>({
     username: "",
     password: "",
@@ -48,6 +50,7 @@ function Signup() {
       } else {
         const userInfo = { ...loginInfo, ...accountInfo };
         createNewUser(userInfo);
+        navigate("/login"); //with login data??????
       }
     }
   }
@@ -105,9 +108,9 @@ function Signup() {
     // }
     return invalidData;
   }
-  function findObject(name: string) {
-    return loginInfoErrors[name] && <div>{loginInfoErrors[name]}</div>;
-  }
+  // function findObject(name: string) {
+  //   return loginInfoErrors[name] && <div>{loginInfoErrors[name]}</div>;
+  // }
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllLogin } from "../data/Axios";
+import { isLoginMatched } from "../data/Axios";
 import { useNavigate, Link } from "react-router-dom";
 import { loginInfo } from "../data/dataTypes";
 
@@ -9,7 +9,7 @@ function Login() {
     username: "",
     password: "",
   });
-  const [isUserMatched, setIsUserMatched] = useState<boolean>(false);
+  const [isUserMatched, setIsUserMatched] = useState<boolean>(true);
 
   function loginEventHandler(key: string, value: string) {
     setLoginInfo({ ...loginInfo, [key]: value });
@@ -17,13 +17,9 @@ function Login() {
 
   async function submitHandler(event: React.FormEvent) {
     event.preventDefault();
-    const usersList = await getAllLogin();
-    const findUser = usersList.find(
-      (user: loginInfo) =>
-        user.username === loginInfo.username &&
-        user.password === loginInfo.password
-    );
-    if (findUser !== undefined) {
+    const isMatched = await isLoginMatched(loginInfo);
+    console.log(isMatched);
+    if (isMatched) {
       setIsUserMatched(true);
       navigate("/"); //with login data?????
     } else {

@@ -1,12 +1,35 @@
 import express, { query } from "express";
 import { getAllLogin, createNewLogin, createNewAccount } from "./query";
+import { Console } from "console";
+// import { loginInfo } from "../../client/src/data/dataTypes";
+
+export type loginInfo = {
+  username: string;
+  password: string;
+};
 
 const router = express.Router();
 
 router.get("/login", async (req: express.Request, res: express.Response) => {
-  const result = await getAllLogin();
-  res.send(result);
-  // getAllLogin().then((result) => res.send(result));
+  const usernameList: any = await getAllLogin();
+  const username = req.query.username;
+  const password = req.query.password;
+
+  const findUser = usernameList.find(
+    (user: loginInfo) =>
+      user.username === username && user.password === password
+  );
+
+  let isUserFound: boolean = false;
+  if (findUser === undefined) {
+    isUserFound = false;
+  } else if (findUser.length > 1) {
+    isUserFound = false;
+  } else {
+    isUserFound = true;
+  }
+  // console.log(findUser, isUserFound);
+  res.send(isUserFound);
 });
 
 router.get(`/signup`, async (req: express.Request, res: express.Response) => {
@@ -29,7 +52,7 @@ router.post("/signup", async (req: express.Request, res: express.Response) => {
     data.email
   ) {
     const loginResult: any = await createNewLogin(data);
-    data = await { ...data, ["userId"]: loginResult.insertId };
+    data = { ...data, ["userId"]: loginResult.insertId };
     const accountResult: any = await createNewAccount(data);
     res.status(200).send("singup is success");
   } else {
