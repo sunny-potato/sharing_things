@@ -1,4 +1,4 @@
-import express, { query } from "express";
+import express from "express";
 import { getAllLogin, createNewLogin, createNewAccount } from "./query";
 import { Console } from "console";
 // import { loginInfo } from "../../client/src/data/dataTypes";
@@ -11,34 +11,42 @@ export type loginInfo = {
 const router = express.Router();
 
 router.get("/login", async (req: express.Request, res: express.Response) => {
-  const usernameList: any = await getAllLogin();
-  const username = req.query.username;
-  const password = req.query.password;
+  try {
+    const usernameList: any = await getAllLogin();
+    const username = req.query.username;
+    const password = req.query.password;
 
-  const findUser = usernameList.find(
-    (user: loginInfo) =>
-      user.username === username && user.password === password
-  );
+    const findUser = usernameList.find(
+      (user: loginInfo) =>
+        user.username === username && user.password === password
+    );
 
-  let isUserFound: boolean = false;
-  if (findUser === undefined) {
-    isUserFound = false;
-  } else if (findUser.length > 1) {
-    isUserFound = false;
-  } else {
-    isUserFound = true;
+    let isUserFound: boolean = false;
+    if (findUser === undefined) {
+      isUserFound = false;
+    } else if (findUser.length > 1) {
+      isUserFound = false;
+    } else {
+      isUserFound = true;
+    }
+    // console.log(findUser, isUserFound);
+    res.send(isUserFound);
+  } catch (error) {
+    res.status(500).send(error);
   }
-  // console.log(findUser, isUserFound);
-  res.send(isUserFound);
 });
 
 router.get(`/signup`, async (req: express.Request, res: express.Response) => {
-  const username = req.query.username;
-  const usernameList: any = await getAllLogin();
-  const isUsernameActive = usernameList.some(
-    (each: Record<string, string>) => each.username === username
-  );
-  res.send(isUsernameActive);
+  try {
+    const username = req.query.username;
+    const usernameList: any = await getAllLogin();
+    const isUsernameActive = usernameList.some(
+      (each: Record<string, string>) => each.username === username
+    );
+    res.send(isUsernameActive);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 router.post("/signup", async (req: express.Request, res: express.Response) => {

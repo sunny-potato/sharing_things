@@ -1,0 +1,11 @@
+.eachProduct {
+  width: 20em;
+  height: 26em;
+  border: solid 1px red;
+}
+
+.rating {
+  width: 1em;
+  height: 1em;
+  /* background: lightcyan; */
+}

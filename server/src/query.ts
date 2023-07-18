@@ -36,8 +36,35 @@ export function createNewAccount(userInfo: userInfo) {
     ]
   );
 }
+
+export function filterDataBySearchKeyword(keyword: any) {
+  return query(
+    `SELECT * FROM products as p WHERE p.title LIKE "%${keyword}%" OR p.description LIKE "%${keyword}%" OR p.brand LIKE "%${keyword}%"`
+  );
+}
+
 // export function createNewAccount(userInfo: any) {
 //   return query(
 //     "SELECT user_login.*, user_account.* from user_login INNER JOIN user_account ON user_login.userId=user_account.userId"
+//   );
+// }
+
+// export function getAllProducts() {
+//   return query("SELECT * FROM products");
+// }
+
+// export function getAllProducts(data: any) {
+//   return query(
+//     "INSERT INTO products SET title=?, desciription=?, rating=?, stock=?, brand=?, category=?, thumbnail=?, images=? ",
+//     [
+//       data.title,
+//       data.desciription,
+//       data.rating,
+//       data.stock,
+//       data.brand,
+//       data.category,
+//       data.thumbnail,
+//       data.images,
+//     ]
 //   );
 // }

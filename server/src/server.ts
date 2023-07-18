@@ -1,7 +1,8 @@
 import express from "express";
 // import query from "./query";
 // import mysql from "mysql2";
-import router from "./router";
+import routerSignInUp from "./router-signinup";
+import routerProducts from "./router-products";
 import path from "path";
 import cors from "cors";
 
@@ -9,7 +10,8 @@ const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cors());
-server.use("/", router);
+server.use("/", routerSignInUp);
+server.use("/", routerProducts);
 
 // server.use(express.static(path.join(__dirname, "/../../client")));
 

@@ -21,3 +21,15 @@ export type userInfo = {
   address: string;
   userId?: number;
 };
+
+export type productInfo = {
+  id: number;
+  title: string;
+  description: string;
+  rating: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  images: string;
+};

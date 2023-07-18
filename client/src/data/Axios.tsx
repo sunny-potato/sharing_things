@@ -1,9 +1,12 @@
 import axios from "axios";
-import { userInfo } from "../data/dataTypes";
+import { userInfo, loginInfo } from "../data/dataTypes";
 axios.defaults.baseURL = "http://localhost:8000";
 
-export async function getAllLogin() {
-  const response = await axios.get("/login");
+export async function isLoginMatched(loginInfo: loginInfo) {
+  const response = await axios.get(
+    `/login?username=${loginInfo.username}&password=${loginInfo.password}`
+  );
+  // console.log("axios result", response);
   return response.data;
 }
 export async function isUserNameActive(userName: string) {
@@ -17,6 +20,25 @@ export async function isUserNameActive(userName: string) {
 // }
 
 export async function createNewUser(accountInfo: userInfo) {
-  const response = await axios.post("/signup", accountInfo);
-  console.log(response.data);
+  await axios.post("/signup", accountInfo);
 }
+
+export async function filterDataBySearchKeyword(keyword: string) {
+  const response = await axios.get(`/search?keyword=${keyword}`);
+  return response.data;
+}
+
+// export async function getAllProducts() {
+//   const response = await axios.get("/");
+//   // console.log("axiso response - ", response.data);
+//   return response.data;
+// }
+
+// export async function getAllProducts() {
+//   const response = await axios.get("https://dummyjson.com/products?limit=0");
+//   console.log(response.data.products);
+//   return response.data.products;
+// }
+// export async function saveAllProducts(data: []) {
+//   const response = await axios.post("/", data);
+// }
